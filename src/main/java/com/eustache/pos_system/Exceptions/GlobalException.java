@@ -12,10 +12,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestControllerAdvice
-public class Global_Exception {
+public class GlobalException {
     // Handles the NotFoundException
-    @ExceptionHandler(Business_Exception.class)
-    public ResponseEntity<Map<String, Object>> handleBusinessExceptionNotFound(Business_Exception e) {
+    @ExceptionHandler(BusinessException.class)
+    public ResponseEntity<Map<String, Object>> handleBusinessExceptionNotFound(BusinessException e) {
         Map<String, Object> response = new HashMap<>();
         response.put("timestamp", LocalDateTime.now());
         response.put("status", HttpStatus.BAD_REQUEST.value());
