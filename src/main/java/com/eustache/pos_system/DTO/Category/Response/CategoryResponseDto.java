@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * DTO for {@link com.eustache.pos_system.Entities.Category}
  */
-public record CategoryDto(
+public record CategoryResponseDto(
         String name,
         String description,
         List<ProductResponseDto>
