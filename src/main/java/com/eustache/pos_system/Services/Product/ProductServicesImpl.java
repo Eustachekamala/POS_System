@@ -6,7 +6,9 @@ import com.eustache.pos_system.DTO.Product.Response.ProductResponseDto;
 import com.eustache.pos_system.Entities.Product;
 import com.eustache.pos_system.Exceptions.BusinessException;
 import com.eustache.pos_system.Mappers.ProductMapper;
+import com.eustache.pos_system.Repositories.CategoryRepository;
 import com.eustache.pos_system.Repositories.ProductRepository;
+import com.eustache.pos_system.Repositories.SupplierRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -15,9 +17,11 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class ProductServicesImpl implements ProductServices{
-    private final ProductMapper productMapper ;
-    private final ProductRepository productRepository ;
+public class ProductServicesImpl implements ProductServices {
+    private final ProductMapper productMapper;
+    private final ProductRepository productRepository;
+    private final CategoryRepository categoryRepository;
+    private final SupplierRepository supplierRepository;
 
     @Override
     public List<ProductResponseDto> getAll() {
@@ -51,6 +55,10 @@ public class ProductServicesImpl implements ProductServices{
         Optional.ofNullable(updateProductDto.purchasePrice()).ifPresent(product::setPurchasePrice);
         Optional.ofNullable(updateProductDto.sellingPrice()).ifPresent(product::setSellingPrice);
         Optional.ofNullable(updateProductDto.quantity()).ifPresent(product::setQuantity);
+        Optional.ofNullable(updateProductDto.categoryId()).ifPresent(
+                categoryId -> product
+                        .setCategory(categoryRepository
+                                .findById(categoryId).orElseThrow(() -> new BusinessException("Category not found"))));
         Optional.ofNullable(updateProductDto.expiryDate()).ifPresent(product::setExpiryDate);
         productRepository.save(product);
         return "Product updated successfully";

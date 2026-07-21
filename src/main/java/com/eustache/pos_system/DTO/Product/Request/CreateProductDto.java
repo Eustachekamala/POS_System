@@ -27,6 +27,10 @@ public record CreateProductDto(
         Double sellingPrice,
         @NotNull(message = "Quantity cannot be null")
         Integer quantity,
+        @NotNull(message = "Category cannot be null")
+        Long categoryId,
+        @NotNull(message = "Supplier cannot be null")
+        Long supplierId,
         @FutureOrPresent(message = "Expiry date cannot be in the past")
         LocalDate expiryDate) implements Serializable {
 }
