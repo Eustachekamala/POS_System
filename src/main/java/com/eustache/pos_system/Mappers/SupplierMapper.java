@@ -1,0 +1,42 @@
+package com.eustache.pos_system.Mappers;
+
+import com.eustache.pos_system.DTO.Supplier.Request.CreateSupplierDto;
+import com.eustache.pos_system.DTO.Supplier.Response.SupplierResponseDto;
+import com.eustache.pos_system.Entities.Supplier;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
+
+@Component
+@RequiredArgsConstructor
+public class SupplierMapper {
+    private final ProductMapper productMapper;
+
+    /**
+     * Converts a CreateSupplierDto to a Supplier entity.
+     * @param createSupplierDto
+     * @return Supplier
+     */
+    public Supplier toEntity(CreateSupplierDto createSupplierDto){
+        Supplier supplier = new Supplier();
+        supplier.setName(createSupplierDto.name());
+        supplier.setAddress(createSupplierDto.address());
+        supplier.setPhone(createSupplierDto.phone());
+        supplier.setEmail(createSupplierDto.email());
+        return supplier;
+    }
+
+    /**
+     * Converts a Supplier entity to a SupplierResponseDto.
+     * @param supplier
+     * @return SupplierResponseDto
+     */
+    public SupplierResponseDto toResponseFromSupplier(Supplier supplier){
+        return new SupplierResponseDto(
+                supplier.getName(),
+                supplier.getAddress(),
+                supplier.getPhone(),
+                supplier.getEmail(),
+                supplier.getProducts().stream().map(productMapper::toResponseFromProduct).toList()
+        );
+    }
+}

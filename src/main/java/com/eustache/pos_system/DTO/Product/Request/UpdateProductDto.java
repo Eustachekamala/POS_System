@@ -25,7 +25,5 @@ public record UpdateProductDto(
         @Positive(message = "Quantity must be positive")
         Integer quantity,
         @FutureOrPresent(message = "Expiry date cannot be in the past")
-        LocalDate expiryDate,
-        @FutureOrPresent(message = "Updated at cannot be in the past")
-        LocalDate updatedAt) implements Serializable {
+        LocalDate expiryDate) implements Serializable {
 }

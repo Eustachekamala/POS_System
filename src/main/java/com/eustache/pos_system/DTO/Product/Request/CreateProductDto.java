@@ -28,7 +28,5 @@ public record CreateProductDto(
         @NotNull(message = "Quantity cannot be null")
         Integer quantity,
         @FutureOrPresent(message = "Expiry date cannot be in the past")
-        LocalDate expiryDate,
-        LocalDate createdAt
-) implements Serializable {
+        LocalDate expiryDate) implements Serializable {
 }
