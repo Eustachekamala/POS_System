@@ -29,6 +29,33 @@ public class User {
             length = 100
     )
     private String password;
+    @Column(
+            nullable = false,
+            length = 100
+    )
+    private String firstName;
+    @Column(
+            nullable = false,
+            length = 100
+    )
+    private String lastName;
+    @Column(
+            nullable = false,
+            length = 100,
+            unique = true
+    )
+    private String email;
+    @Column(
+            nullable = false,
+            length = 100,
+            unique = true
+    )
+    private String phone;
+    @Column(
+            nullable = false,
+            length = 100
+    )
+    private String address;
     @Enumerated(EnumType.STRING)
     @Column(
             nullable = false,
@@ -36,7 +63,9 @@ public class User {
     )
     private RoleEnum role;
 
-    // Relationships
+    /**
+     * One user can have many sales
+     */
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Sale> sales;
 }

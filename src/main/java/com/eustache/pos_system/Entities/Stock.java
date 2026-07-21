@@ -21,8 +21,12 @@ public class Stock {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private double quantity;
+
+    /**
+     * Many stocks can belong to one product
+     */
     @ManyToOne
-    @JoinColumn(name = "product_id", nullable = false, referencedColumnName = "id" , foreignKey = @ForeignKey(
+    @JoinColumn(name = "product_id", referencedColumnName = "id" , foreignKey = @ForeignKey(
             name = "fk_stock_product"
     ))
     private Product product;

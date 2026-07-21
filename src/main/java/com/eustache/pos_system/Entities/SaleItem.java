@@ -16,8 +16,12 @@ public class SaleItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    /**
+     * Many sale items can belong to one sale
+     */
     @ManyToOne
-    @JoinColumn(name = "sale_id", nullable = false, referencedColumnName = "id", foreignKey = @ForeignKey(
+    @JoinColumn(name = "sale_id", referencedColumnName = "id", foreignKey = @ForeignKey(
             name = "fk_sale_item_sale"
     ))
     private Sale sale;

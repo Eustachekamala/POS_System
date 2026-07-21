@@ -60,15 +60,20 @@ public class Product {
     @UpdateTimestamp
     private LocalDate updatedAt;
 
-    // Relationships
+    /**
+     * Many products can have one category
+     */
     @ManyToOne
-    @JoinColumn(name = "category_id", nullable = false, referencedColumnName = "id" , foreignKey = @ForeignKey(
+    @JoinColumn(name = "category_id", referencedColumnName = "id" , foreignKey = @ForeignKey(
             name = "fk_product_category"
     ))
     private Category category;
 
+    /**
+     * Many products can have one supplier
+     */
     @ManyToOne
-    @JoinColumn(name = "supplier_id", nullable = false, referencedColumnName = "id" , foreignKey = @ForeignKey(
+    @JoinColumn(name = "supplier_id", referencedColumnName = "id" , foreignKey = @ForeignKey(
             name = "fk_product_supplier"
     ))
     private Supplier supplier;

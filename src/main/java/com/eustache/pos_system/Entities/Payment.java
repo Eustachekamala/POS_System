@@ -19,9 +19,11 @@ public class Payment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // Relationship with Sale
+    /**
+     * Many payments can belong to one sale
+     */
     @ManyToOne
-    @JoinColumn(name = "sale_id", nullable = false, referencedColumnName = "id", foreignKey = @ForeignKey(
+    @JoinColumn(name = "sale_id", referencedColumnName = "id", foreignKey = @ForeignKey(
             name = "fk_payment_sale"
     ))
     private Sale sale;

@@ -39,7 +39,9 @@ public class Supplier {
     )
     private String email;
 
-    // Relationships
+    /**
+     * One supplier can have many products
+     */
     @OneToMany(mappedBy = "supplier", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Product> products;
 }

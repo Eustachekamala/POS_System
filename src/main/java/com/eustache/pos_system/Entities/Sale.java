@@ -57,4 +57,10 @@ public class Sale {
 
     @OneToMany(mappedBy = "sale", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Payment> payments;
+
+    @ManyToOne
+    @JoinColumn(name = "customer_id", referencedColumnName = "id", foreignKey = @ForeignKey(
+            name = "fk_sale_customer"
+    ))
+    private Customer customer;
 }

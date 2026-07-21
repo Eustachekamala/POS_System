@@ -29,7 +29,9 @@ public class Category {
     )
     private String description;
 
-    // Relationships
+    /**
+     * One category can have many products
+     */
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Product> products;
 }

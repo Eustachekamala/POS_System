@@ -4,5 +4,7 @@ public enum PaymentMethod {
     CASH,
     CREDIT_CARD,
     DEBIT_CARD,
-    TRANSFER;
+    MPESA,
+    AIRTEL_MONEY,
+    ORANGE_MONEY
 }
