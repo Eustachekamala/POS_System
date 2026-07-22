@@ -45,6 +45,9 @@ public class LoyaltyCard {
     /**
      * One loyalty card can have one customer
      */
-    @OneToOne(mappedBy = "loyaltyCard")
+    @OneToOne
+    @JoinColumn(name = "customer_id", referencedColumnName = "id", foreignKey = @ForeignKey(
+            name = "fk_loyalty_card_customer"
+    ))
     private Customer customer;
 }

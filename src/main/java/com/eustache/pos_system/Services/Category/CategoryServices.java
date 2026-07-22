@@ -11,8 +11,8 @@ import java.util.List;
 public interface CategoryServices {
     List<CategoryResponseDto> findAll();
     CategoryResponseDto findById(Long id);
-    String create(CreateCategoryDto createCategoryDto);
-    String update(Long id, UpdateCategoryDto updateCategoryDto);
+    CategoryResponseDto create(CreateCategoryDto createCategoryDto);
+    CategoryResponseDto update(Long id, UpdateCategoryDto updateCategoryDto);
     String delete(Long id);
     CategoryResponseDto searchByName(String name);
 }

@@ -33,7 +33,7 @@ public class Customer {
     )
     private String lastName;
     @Column(
-            nullable = false,
+            nullable = true,
             length = 100,
             unique = true
     )
@@ -55,10 +55,11 @@ public class Customer {
     /**
      * One customer can have one loyalty card
      */
-    @OneToOne
-    @JoinColumn(name = "loyalty_card_id", referencedColumnName = "id", foreignKey = @ForeignKey(
-            name = "fk_customer_loyalty_card"
-    ))
+    @OneToOne(
+            mappedBy = "customer",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
     private LoyaltyCard loyaltyCard;
 
     /**

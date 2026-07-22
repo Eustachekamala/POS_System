@@ -3,8 +3,12 @@ package com.eustache.pos_system.Mappers;
 import com.eustache.pos_system.DTO.Category.Request.CreateCategoryDto;
 import com.eustache.pos_system.DTO.Category.Response.CategoryResponseDto;
 import com.eustache.pos_system.Entities.Category;
+import com.eustache.pos_system.Entities.Product;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+
+import java.util.Collections;
+import java.util.List;
 
 @Component
 @RequiredArgsConstructor
@@ -27,14 +31,17 @@ public class CategoryMapper {
      * @param category
      * @return CategoryResponseDto
      */
-    public CategoryResponseDto toResponseFromCategory(Category category){
-        return  new CategoryResponseDto(
+    public CategoryResponseDto toResponseFromCategory(Category category) {
+        List<Product> products = category.getProducts();
+        return new CategoryResponseDto(
+                category.getId(),
                 category.getName(),
                 category.getDescription(),
-                category.getProducts()
-                .stream()
-                .map(productMapper::toResponseFromProduct)
-                .toList()
+                products == null
+                        ? Collections.emptyList()
+                        : products.stream()
+                        .map(productMapper::toResponseFromProduct)
+                        .toList()
         );
     }
 }

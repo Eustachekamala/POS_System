@@ -3,6 +3,7 @@ package com.eustache.pos_system.Controllers;
 import com.eustache.pos_system.DTO.Category.Request.CreateCategoryDto;
 import com.eustache.pos_system.DTO.Category.Request.UpdateCategoryDto;
 import com.eustache.pos_system.DTO.Category.Response.CategoryResponseDto;
+import com.eustache.pos_system.Services.Category.CategoryServices;
 import com.eustache.pos_system.Services.Category.CategoryServicesImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -10,7 +11,9 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -18,41 +21,59 @@ import java.util.List;
 @RequiredArgsConstructor
 @Tag(name = "Category Controller", description = "Controller for managing categories")
 public class CategoryController {
-    private final CategoryServicesImpl categoryServicesImpl;
+    private final CategoryServices categoryServices;
 
     @GetMapping("/all")
     @Operation(summary = "Get all categories")
     public ResponseEntity<List<CategoryResponseDto>> getAllCategories() {
-        return ResponseEntity.ok(categoryServicesImpl.findAll());
+        return ResponseEntity.ok(categoryServices.findAll());
     }
 
-    @GetMapping("/searchById/{id}")
+    @GetMapping("/{id}")
     @Operation(summary = "Get category by ID")
     public ResponseEntity<CategoryResponseDto> getCategoryById(@PathVariable Long id) {
-        return ResponseEntity.ok(categoryServicesImpl.findById(id));
+        return ResponseEntity.ok(categoryServices.findById(id));
     }
 
-    @PostMapping("/create")
-    @Operation(summary = "Create a new category", description = "Create a new category")
-    public ResponseEntity<String> createCategory(@RequestBody @Valid CreateCategoryDto createCategoryDto) {
-        return ResponseEntity.ok(categoryServicesImpl.create(createCategoryDto));
+    @PostMapping
+    @Operation(summary = "Create a new category", description = "Create a new category with the provided name and description")
+    public ResponseEntity<CategoryResponseDto> create(
+            @Valid @RequestBody CreateCategoryDto dto) {
+
+        CategoryResponseDto created =
+                categoryServices.create(dto);
+
+        URI location =
+                ServletUriComponentsBuilder
+                        .fromCurrentRequest()
+                        .path("/{id}")
+                        .buildAndExpand(created.id())
+                        .toUri();
+
+        return ResponseEntity.created(location)
+                .body(created);
     }
 
-    @PatchMapping("/update/{id}")
+    @PatchMapping("/{id}")
     @Operation(summary = "Update an existing category", description = "Update an existing category by ID")
-    public ResponseEntity<String> updateCategory(@PathVariable Long id, @RequestBody @Valid UpdateCategoryDto updateCategoryDto) {
-        return ResponseEntity.ok(categoryServicesImpl.update(id, updateCategoryDto));
+    public ResponseEntity<CategoryResponseDto> update(
+            @PathVariable Long id,
+            @Valid @RequestBody UpdateCategoryDto dto) {
+
+        return ResponseEntity.ok(
+                categoryServices.update(id, dto)
+        );
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("{id}")
     @Operation(summary = "Delete a category", description = "Delete a category by ID")
     public ResponseEntity<String> deleteCategory(@PathVariable Long id) {
-        return ResponseEntity.ok(categoryServicesImpl.delete(id));
+        return ResponseEntity.ok(categoryServices.delete(id));
     }
 
-    @PostMapping("/searchByName/{name}")
+    @GetMapping
     @Operation(summary = "Search categories by name", description = "Search categories by name")
-    public ResponseEntity<CategoryResponseDto> searchCategoriesByName(@PathVariable String name) {
-        return ResponseEntity.ok(categoryServicesImpl.searchByName(name));
+    public ResponseEntity<CategoryResponseDto> searchCategoriesByName(@RequestParam String name) {
+        return ResponseEntity.ok(categoryServices.searchByName(name));
     }
 }

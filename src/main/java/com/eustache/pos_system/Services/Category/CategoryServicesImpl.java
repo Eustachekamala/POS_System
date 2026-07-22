@@ -36,21 +36,21 @@ public class CategoryServicesImpl implements CategoryServices{
     }
 
     @Override
-    public String create(CreateCategoryDto createCategoryDto) {
+    public CategoryResponseDto create(CreateCategoryDto createCategoryDto) {
         Category category = categoryMapper.toEntity(createCategoryDto);
-        categoryRepository.save(category);
-        return "Category created successfully";
+        Category savedCategory = categoryRepository.save(category);
+        return categoryMapper.toResponseFromCategory(savedCategory);
     }
 
     @Override
-    public String update(Long id, UpdateCategoryDto updateCategoryDto) {
+    public CategoryResponseDto update(Long id, UpdateCategoryDto updateCategoryDto) {
         Category category = categoryRepository.findById(id).orElseThrow(
                 () -> new BusinessException("Category not found")
         );
         Optional.ofNullable(updateCategoryDto.name()).ifPresent(category::setName);
         Optional.ofNullable(updateCategoryDto.description()).ifPresent(category::setDescription);
-        categoryRepository.save(category);
-        return "Category updated successfully";
+        Category updatedCategory = categoryRepository.save(category);
+        return categoryMapper.toResponseFromCategory(updatedCategory);
     }
 
     @Override
