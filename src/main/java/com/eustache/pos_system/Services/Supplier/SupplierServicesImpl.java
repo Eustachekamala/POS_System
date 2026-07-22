@@ -1,10 +1,12 @@
 package com.eustache.pos_system.Services.Supplier;
 
+import com.eustache.pos_system.DTO.Product.Response.ProductSummary;
 import com.eustache.pos_system.DTO.Supplier.Request.CreateSupplierDto;
 import com.eustache.pos_system.DTO.Supplier.Request.UpdateSupplierDto;
 import com.eustache.pos_system.DTO.Supplier.Response.SupplierResponseDto;
 import com.eustache.pos_system.Entities.Supplier;
 import com.eustache.pos_system.Exceptions.BusinessException;
+import com.eustache.pos_system.Mappers.ProductMapper;
 import com.eustache.pos_system.Mappers.SupplierMapper;
 import com.eustache.pos_system.Repositories.SupplierRepository;
 import lombok.RequiredArgsConstructor;
@@ -18,16 +20,17 @@ import java.util.Optional;
 public class SupplierServicesImpl implements SupplierServices{
     private final SupplierRepository supplierRepository;
     private final SupplierMapper supplierMapper;
+    private final ProductMapper productMapper;
 
     @Override
-    public String createSupplier(CreateSupplierDto createSupplierDto) {
+    public SupplierResponseDto createSupplier(CreateSupplierDto createSupplierDto) {
         Supplier supplier = supplierMapper.toEntity(createSupplierDto);
         supplierRepository.save(supplier);
-        return "Supplier created successfully";
+        return supplierMapper.toResponseFromSupplier(supplier);
     }
 
     @Override
-    public String updateSupplier(Long id, UpdateSupplierDto updateSupplierDto) {
+    public SupplierResponseDto updateSupplier(Long id, UpdateSupplierDto updateSupplierDto) {
         Supplier supplier = supplierRepository.findById(id).orElseThrow(
                 () -> new BusinessException("Supplier not found")
         );
@@ -36,16 +39,15 @@ public class SupplierServicesImpl implements SupplierServices{
         Optional.ofNullable(updateSupplierDto.phone()).ifPresent(supplier::setPhone);
         Optional.ofNullable(updateSupplierDto.address()).ifPresent(supplier::setAddress);
         supplierRepository.save(supplier);
-        return "Supplier updated successfully";
+        return supplierMapper.toResponseFromSupplier(supplier);
     }
 
     @Override
-    public String deleteSupplier(Long id) {
+    public void deleteSupplier(Long id) {
         Supplier supplier = supplierRepository.findById(id).orElseThrow(
                 () -> new BusinessException("Supplier not found")
         );
         supplierRepository.delete(supplier);
-        return "Supplier deleted successfully";
     }
 
     @Override
@@ -68,6 +70,16 @@ public class SupplierServicesImpl implements SupplierServices{
         return supplierRepository.findAll().stream()
                 .filter(supplier -> supplier.getName().toLowerCase().contains(name.toLowerCase()))
                 .map(supplierMapper::toResponseFromSupplier)
+                .toList();
+    }
+
+    @Override
+    public List<ProductSummary> getProductsBySupplier(Long id) {
+        Supplier supplier = supplierRepository.findById(id).orElseThrow(
+                () ->new BusinessException("Supplier not found")
+        );
+        return supplier.getProducts().stream()
+                .map(productMapper::toProductSummary)
                 .toList();
     }
 }

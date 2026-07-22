@@ -1,7 +1,9 @@
 package com.eustache.pos_system.DTO.Product.Response;
 
+import com.eustache.pos_system.DTO.Category.Response.CategorySummary;
+import com.eustache.pos_system.DTO.Supplier.Response.SupplierSummary;
+
 import java.io.Serializable;
-import java.time.LocalDate;
 
 /**
  * DTO for {@link com.eustache.pos_system.Entities.Product}
@@ -10,14 +12,9 @@ public record ProductResponseDto(
         Long id,
         String name,
         String description,
-        Double price,
         String barcode,
-        Double purchasePrice,
         Double sellingPrice,
         Integer quantity,
-        LocalDate expiryDate,
-        LocalDate createdAt,
-        LocalDate updatedAt,
-        String categoryNameName,
-        String supplierNameName) implements Serializable {
+        CategorySummary category,
+        SupplierSummary supplier) implements Serializable {
 }

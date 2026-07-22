@@ -53,7 +53,8 @@ public class CategoryController {
     @ApiResponses(
             value = {
                     @ApiResponse(responseCode = "201", description = "Successfully created new category"),
-                    @ApiResponse(responseCode = "400", description = "Invalid input")
+                    @ApiResponse(responseCode = "400", description = "Invalid input"),
+                    @ApiResponse(responseCode = "500", description = "Internal server error")
             }
     )
     public ResponseEntity<CategoryResponseDto> create(
@@ -79,7 +80,8 @@ public class CategoryController {
             value = {
                     @ApiResponse(responseCode = "200", description = "Successfully updated category"),
                     @ApiResponse(responseCode = "404", description = "Category not found"),
-                    @ApiResponse(responseCode = "400", description = "Invalid input")
+                    @ApiResponse(responseCode = "400", description = "Invalid input"),
+                    @ApiResponse(responseCode = "500", description = "Internal server error")
             }
     )
     public ResponseEntity<CategoryResponseDto> update(

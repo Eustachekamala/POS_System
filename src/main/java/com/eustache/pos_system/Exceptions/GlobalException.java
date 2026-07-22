@@ -18,8 +18,8 @@ public class GlobalException {
     public ResponseEntity<Map<String, Object>> handleBusinessExceptionNotFound(BusinessException e) {
         Map<String, Object> response = new HashMap<>();
         response.put("timestamp", LocalDateTime.now());
-        response.put("status", HttpStatus.BAD_REQUEST.value());
-        response.put("error", HttpStatus.BAD_REQUEST.getReasonPhrase());
+        response.put("status", HttpStatus.NOT_FOUND.value());
+        response.put("error", HttpStatus.NOT_FOUND.getReasonPhrase());
         response.put("message", e.getMessage());
         return ResponseEntity.badRequest().body(response);
     }

@@ -30,7 +30,8 @@ public class ProductController {
     @ApiResponses(
             value = {
                     @ApiResponse(responseCode = "201", description = "Successfully created new product"),
-                    @ApiResponse(responseCode = "400", description = "Invalid input")
+                    @ApiResponse(responseCode = "400", description = "Invalid input"),
+                    @ApiResponse(responseCode = "500", description = "Internal server error")
             }
     )
     public ResponseEntity<ProductResponseDto> createProduct(@RequestBody @Valid CreateProductDto createProductDto) {
@@ -76,7 +77,8 @@ public class ProductController {
             value = {
                     @ApiResponse(responseCode = "200", description = "Successfully updated product by ID"),
                     @ApiResponse(responseCode = "404", description = "Product not found"),
-                    @ApiResponse(responseCode = "400", description = "Invalid input")
+                    @ApiResponse(responseCode = "400", description = "Invalid input"),
+                    @ApiResponse(responseCode = "500", description = "Internal server error")
             }
     )
     public ResponseEntity<ProductResponseDto> updateProduct(

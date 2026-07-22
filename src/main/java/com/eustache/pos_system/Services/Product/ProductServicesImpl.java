@@ -50,7 +50,6 @@ public class ProductServicesImpl implements ProductServices {
         );
         Optional.ofNullable(updateProductDto.name()).ifPresent(product::setName);
         Optional.ofNullable(updateProductDto.description()).ifPresent(product::setDescription);
-        Optional.ofNullable(updateProductDto.price()).ifPresent(product::setPrice);
         Optional.ofNullable(updateProductDto.barcode()).ifPresent(product::setBarcode);
         Optional.ofNullable(updateProductDto.purchasePrice()).ifPresent(product::setPurchasePrice);
         Optional.ofNullable(updateProductDto.sellingPrice()).ifPresent(product::setSellingPrice);

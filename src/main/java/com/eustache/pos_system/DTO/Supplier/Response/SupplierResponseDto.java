@@ -10,9 +10,10 @@ import java.util.List;
  * DTO for {@link Supplier}
  */
 public record SupplierResponseDto(
+        Long id,
         String name,
         String address,
         String phone,
         String email,
-        List<ProductResponseDto> products) implements Serializable {
+        int productsCount) implements Serializable {
 }

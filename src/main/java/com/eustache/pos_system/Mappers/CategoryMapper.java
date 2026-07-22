@@ -2,6 +2,7 @@ package com.eustache.pos_system.Mappers;
 
 import com.eustache.pos_system.DTO.Category.Request.CreateCategoryDto;
 import com.eustache.pos_system.DTO.Category.Response.CategoryResponseDto;
+import com.eustache.pos_system.DTO.Product.Response.ProductSummary;
 import com.eustache.pos_system.Entities.Category;
 import com.eustache.pos_system.Entities.Product;
 import lombok.RequiredArgsConstructor;
@@ -32,16 +33,11 @@ public class CategoryMapper {
      * @return CategoryResponseDto
      */
     public CategoryResponseDto toResponseFromCategory(Category category) {
-        List<Product> products = category.getProducts();
         return new CategoryResponseDto(
                 category.getId(),
                 category.getName(),
                 category.getDescription(),
-                products == null
-                        ? Collections.emptyList()
-                        : products.stream()
-                        .map(productMapper::toResponseFromProduct)
-                        .toList()
+                category.getProducts().stream().map(productMapper::toProductSummary).toList()
         );
     }
 }

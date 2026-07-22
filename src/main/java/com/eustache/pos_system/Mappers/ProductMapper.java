@@ -1,7 +1,10 @@
 package com.eustache.pos_system.Mappers;
 
+import com.eustache.pos_system.DTO.Category.Response.CategorySummary;
 import com.eustache.pos_system.DTO.Product.Request.CreateProductDto;
 import com.eustache.pos_system.DTO.Product.Response.ProductResponseDto;
+import com.eustache.pos_system.DTO.Product.Response.ProductSummary;
+import com.eustache.pos_system.DTO.Supplier.Response.SupplierSummary;
 import com.eustache.pos_system.Entities.Product;
 import com.eustache.pos_system.Repositories.CategoryRepository;
 import com.eustache.pos_system.Repositories.SupplierRepository;
@@ -24,7 +27,6 @@ public class ProductMapper {
         Product product = new Product();
         product.setName(createProductDto.name());
         product.setDescription(createProductDto.description());
-        product.setPrice(createProductDto.price());
         product.setBarcode(createProductDto.barcode());
         product.setPurchasePrice(createProductDto.purchasePrice());
         product.setSellingPrice(createProductDto.sellingPrice());
@@ -46,20 +48,32 @@ public class ProductMapper {
      * @return ProductResponseDto
      */
     public ProductResponseDto toResponseFromProduct(Product product){
+        CategorySummary category = new CategorySummary(
+                product.getCategory().getId(),
+                product.getCategory().getName());
+        SupplierSummary supplier = new SupplierSummary(
+                product.getSupplier().getId(),
+                product.getSupplier().getName());
         return  new ProductResponseDto(
                 product.getId(),
                 product.getName(),
                 product.getDescription(),
-                product.getPrice(),
                 product.getBarcode(),
-                product.getPurchasePrice(),
                 product.getSellingPrice(),
                 product.getQuantity(),
-                product.getExpiryDate(),
-                product.getCreatedAt(),
-                product.getUpdatedAt(),
-                product.getCategory().getName(),
-                product.getSupplier().getName()
+                category,
+                supplier
+        );
+    }
+
+
+    public ProductSummary toProductSummary(Product product){
+        return new ProductSummary(
+                product.getId(),
+                product.getName(),
+                product.getBarcode(),
+                product.getSellingPrice(),
+                product.getQuantity()
         );
     }
 }

@@ -1,5 +1,6 @@
 package com.eustache.pos_system.Services.Supplier;
 
+import com.eustache.pos_system.DTO.Product.Response.ProductSummary;
 import com.eustache.pos_system.DTO.Supplier.Request.CreateSupplierDto;
 import com.eustache.pos_system.DTO.Supplier.Request.UpdateSupplierDto;
 import com.eustache.pos_system.DTO.Supplier.Response.SupplierResponseDto;
@@ -9,10 +10,11 @@ import java.util.List;
 
 @Component
 public interface SupplierServices {
-    String createSupplier(CreateSupplierDto createSupplierDto);
-    String updateSupplier(Long id, UpdateSupplierDto updateSupplierDto);
-    String deleteSupplier(Long id);
+    SupplierResponseDto createSupplier(CreateSupplierDto createSupplierDto);
+    SupplierResponseDto updateSupplier(Long id, UpdateSupplierDto updateSupplierDto);
+    void deleteSupplier(Long id);
     List<SupplierResponseDto> getAllSuppliers();
     SupplierResponseDto getSupplierById(Long id);
     List<SupplierResponseDto> searchSuppliers(String name);
+    List<ProductSummary> getProductsBySupplier(Long id);
 }

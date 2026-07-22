@@ -1,6 +1,7 @@
 package com.eustache.pos_system.DTO.Category.Response;
 
 import com.eustache.pos_system.DTO.Product.Response.ProductResponseDto;
+import com.eustache.pos_system.DTO.Product.Response.ProductSummary;
 
 import java.io.Serializable;
 import java.util.List;
@@ -12,5 +13,5 @@ public record CategoryResponseDto(
         Long id,
         String name,
         String description,
-        List<ProductResponseDto> products) implements Serializable {
+        List<ProductSummary> products) implements Serializable {
 }
