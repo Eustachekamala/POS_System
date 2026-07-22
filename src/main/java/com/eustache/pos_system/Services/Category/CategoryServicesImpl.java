@@ -54,12 +54,11 @@ public class CategoryServicesImpl implements CategoryServices{
     }
 
     @Override
-    public String delete(Long id) {
+    public void delete(Long id) {
         Category category = categoryRepository.findById(id).orElseThrow(
                 () -> new BusinessException("Category not found")
         );
         categoryRepository.delete(category);
-        return "Category deleted successfully";
     }
 
     @Override

@@ -37,14 +37,14 @@ public class ProductServicesImpl implements ProductServices {
     }
 
     @Override
-    public String create(CreateProductDto createProductDto) {
-        Product product = productMapper.toEntity(createProductDto);
-        productRepository.save(product);
-        return "Product Created Successfully";
+    public ProductResponseDto create(CreateProductDto createProductDto) {
+        Product productCreated = productMapper.toEntity(createProductDto);
+        productRepository.save(productCreated);
+        return productMapper.toResponseFromProduct(productCreated);
     }
 
     @Override
-    public String update(Long id, UpdateProductDto updateProductDto) {
+    public ProductResponseDto update(Long id, UpdateProductDto updateProductDto) {
         Product product = productRepository.findById(id).orElseThrow(
                 () -> new BusinessException("Product not found")
         );
@@ -61,7 +61,7 @@ public class ProductServicesImpl implements ProductServices {
                                 .findById(categoryId).orElseThrow(() -> new BusinessException("Category not found"))));
         Optional.ofNullable(updateProductDto.expiryDate()).ifPresent(product::setExpiryDate);
         productRepository.save(product);
-        return "Product updated successfully";
+        return productMapper.toResponseFromProduct(product);
     }
 
     @Override
@@ -92,8 +92,8 @@ public class ProductServicesImpl implements ProductServices {
     }
 
     @Override
-    public List<ProductResponseDto> searchByCategory(Long categoryId) {
-        return productRepository.findByCategoryId(categoryId)
+    public List<ProductResponseDto> searchByCategory(String categoryName) {
+        return productRepository.findByCategoryName(categoryName)
                 .stream()
                 .map(productMapper::toResponseFromProduct)
                 .toList();

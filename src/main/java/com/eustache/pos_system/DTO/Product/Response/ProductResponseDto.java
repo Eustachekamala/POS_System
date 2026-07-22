@@ -7,6 +7,7 @@ import java.time.LocalDate;
  * DTO for {@link com.eustache.pos_system.Entities.Product}
  */
 public record ProductResponseDto(
+        Long id,
         String name,
         String description,
         Double price,

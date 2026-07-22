@@ -11,10 +11,10 @@ import java.util.List;
 public interface ProductServices {
     List<ProductResponseDto> getAll();
     ProductResponseDto getById(Long id);
-    String create(CreateProductDto createProductDto);
-    String update(Long id, UpdateProductDto updateProductDto);
+    ProductResponseDto create(CreateProductDto createProductDto);
+    ProductResponseDto update(Long id, UpdateProductDto updateProductDto);
     String delete(Long id);
     ProductResponseDto searchByName(String name);
     ProductResponseDto searchByBarcode(String barcode);
-    List<ProductResponseDto> searchByCategory(Long categoryId);
+    List<ProductResponseDto> searchByCategory(String categoryName);
 }

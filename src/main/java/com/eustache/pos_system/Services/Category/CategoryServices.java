@@ -13,6 +13,6 @@ public interface CategoryServices {
     CategoryResponseDto findById(Long id);
     CategoryResponseDto create(CreateCategoryDto createCategoryDto);
     CategoryResponseDto update(Long id, UpdateCategoryDto updateCategoryDto);
-    String delete(Long id);
+    void delete(Long id);
     CategoryResponseDto searchByName(String name);
 }
