@@ -1,5 +1,6 @@
 package com.eustache.pos_system.DTO.Product.Request;
 
+import com.eustache.pos_system.DTO.Stock.Request.UpdateStockDto;
 import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
@@ -23,9 +24,9 @@ public record UpdateProductDto(
         Double purchasePrice,
         @Positive(message = "Selling price must be positive")
         Double sellingPrice,
-        @Positive(message = "Quantity must be positive")
-        Integer quantity,
         Long categoryId,
+        Long supplierId,
         @FutureOrPresent(message = "Expiry date cannot be in the past")
-        LocalDate expiryDate) implements Serializable {
+        LocalDate expiryDate,
+        UpdateStockDto stock) implements Serializable {
 }

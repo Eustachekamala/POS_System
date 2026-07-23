@@ -14,7 +14,6 @@ public record ProductResponseDto(
         String description,
         String barcode,
         Double sellingPrice,
-        Integer quantity,
         CategorySummary category,
         SupplierSummary supplier) implements Serializable {
 }

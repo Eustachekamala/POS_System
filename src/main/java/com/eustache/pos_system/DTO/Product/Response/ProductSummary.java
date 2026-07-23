@@ -4,7 +4,6 @@ public record ProductSummary(
         Long id,
         String name,
         String barcode,
-        Double sellingPrice,
-        Integer quantity
+        Double sellingPrice
 ) {
 }

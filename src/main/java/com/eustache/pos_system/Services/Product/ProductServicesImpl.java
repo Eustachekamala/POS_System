@@ -4,14 +4,18 @@ import com.eustache.pos_system.DTO.Product.Request.CreateProductDto;
 import com.eustache.pos_system.DTO.Product.Request.UpdateProductDto;
 import com.eustache.pos_system.DTO.Product.Response.ProductResponseDto;
 import com.eustache.pos_system.Entities.Product;
+import com.eustache.pos_system.Entities.Stock;
 import com.eustache.pos_system.Exceptions.BusinessException;
 import com.eustache.pos_system.Mappers.ProductMapper;
 import com.eustache.pos_system.Repositories.CategoryRepository;
 import com.eustache.pos_system.Repositories.ProductRepository;
+import com.eustache.pos_system.Repositories.StockRepository;
 import com.eustache.pos_system.Repositories.SupplierRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,6 +26,7 @@ public class ProductServicesImpl implements ProductServices {
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
     private final SupplierRepository supplierRepository;
+    private final StockRepository stockRepository;
 
     @Override
     public List<ProductResponseDto> getAll() {
@@ -36,6 +41,7 @@ public class ProductServicesImpl implements ProductServices {
         return productMapper.toResponseFromProduct(product);
     }
 
+    @Transactional
     @Override
     public ProductResponseDto create(CreateProductDto createProductDto) {
         Product productCreated = productMapper.toEntity(createProductDto);
@@ -44,22 +50,81 @@ public class ProductServicesImpl implements ProductServices {
     }
 
     @Override
+    @Transactional
     public ProductResponseDto update(Long id, UpdateProductDto updateProductDto) {
-        Product product = productRepository.findById(id).orElseThrow(
-                () -> new BusinessException("Product not found")
-        );
-        Optional.ofNullable(updateProductDto.name()).ifPresent(product::setName);
-        Optional.ofNullable(updateProductDto.description()).ifPresent(product::setDescription);
-        Optional.ofNullable(updateProductDto.barcode()).ifPresent(product::setBarcode);
-        Optional.ofNullable(updateProductDto.purchasePrice()).ifPresent(product::setPurchasePrice);
-        Optional.ofNullable(updateProductDto.sellingPrice()).ifPresent(product::setSellingPrice);
-        Optional.ofNullable(updateProductDto.quantity()).ifPresent(product::setQuantity);
-        Optional.ofNullable(updateProductDto.categoryId()).ifPresent(
-                categoryId -> product
-                        .setCategory(categoryRepository
-                                .findById(categoryId).orElseThrow(() -> new BusinessException("Category not found"))));
-        Optional.ofNullable(updateProductDto.expiryDate()).ifPresent(product::setExpiryDate);
+
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new BusinessException("Product not found"));
+
+
+        Optional.ofNullable(updateProductDto.name())
+                .ifPresent(product::setName);
+
+        Optional.ofNullable(updateProductDto.description())
+                .ifPresent(product::setDescription);
+
+        Optional.ofNullable(updateProductDto.barcode())
+                .ifPresent(product::setBarcode);
+
+        Optional.ofNullable(updateProductDto.purchasePrice())
+                .ifPresent(product::setPurchasePrice);
+
+        Optional.ofNullable(updateProductDto.sellingPrice())
+                .ifPresent(product::setSellingPrice);
+
+
+        Optional.ofNullable(updateProductDto.categoryId())
+                .ifPresent(categoryId ->
+                        product.setCategory(
+                                categoryRepository.findById(categoryId)
+                                        .orElseThrow(() ->
+                                                new BusinessException("Category not found"))
+                        )
+                );
+
+
+        Optional.ofNullable(updateProductDto.supplierId())
+                .ifPresent(supplierId ->
+                        product.setSupplier(
+                                supplierRepository.findById(supplierId)
+                                        .orElseThrow(() ->
+                                                new BusinessException("Supplier not found"))
+                        )
+                );
+
+
+        /*
+         * Update Stock
+         */
+        Optional.ofNullable(updateProductDto.stock())
+                .ifPresent(stockDto -> {
+
+                    Stock stock = product.getStock();
+
+                    if(stock == null){
+                        throw new BusinessException("Product stock not found");
+                    }
+
+
+                    Optional.ofNullable(stockDto.quantity())
+                            .ifPresent(stock::setQuantity);
+
+
+                    Optional.ofNullable(stockDto.minQuantity())
+                            .ifPresent(stock::setMinQuantity);
+
+
+                    stock.setLastUpdated(LocalDate.now());
+                });
+
+
+        Optional.ofNullable(updateProductDto.expiryDate())
+                .ifPresent(product::setExpiryDate);
+
+
+
         productRepository.save(product);
+
         return productMapper.toResponseFromProduct(product);
     }
 

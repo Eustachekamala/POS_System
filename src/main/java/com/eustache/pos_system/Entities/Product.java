@@ -46,10 +46,6 @@ public class Product {
     @Column(
             nullable = false
     )
-    private int quantity;
-    @Column(
-            nullable = false
-    )
     private LocalDate expiryDate;
     @CreationTimestamp
     private LocalDate createdAt;

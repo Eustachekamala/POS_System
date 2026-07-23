@@ -1,5 +1,6 @@
 package com.eustache.pos_system.DTO.Product.Request;
 
+import com.eustache.pos_system.DTO.Stock.Request.CreateStockDto;
 import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -25,12 +26,11 @@ public record CreateProductDto(
         Double purchasePrice,
         @NotNull(message = "Selling price cannot be null")
         Double sellingPrice,
-        @NotNull(message = "Quantity cannot be null")
-        Integer quantity,
         @NotNull(message = "Category cannot be null")
         Long categoryId,
         @NotNull(message = "Supplier cannot be null")
         Long supplierId,
         @FutureOrPresent(message = "Expiry date cannot be in the past")
-        LocalDate expiryDate) implements Serializable {
+        LocalDate expiryDate,
+        CreateStockDto stock) implements Serializable {
 }
