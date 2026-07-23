@@ -4,6 +4,7 @@ import com.eustache.pos_system.DTO.Category.Response.CategorySummary;
 import com.eustache.pos_system.DTO.Product.Request.CreateProductDto;
 import com.eustache.pos_system.DTO.Product.Response.ProductResponseDto;
 import com.eustache.pos_system.DTO.Product.Response.ProductSummary;
+import com.eustache.pos_system.DTO.Stock.Response.StockSummary;
 import com.eustache.pos_system.DTO.Supplier.Response.SupplierSummary;
 import com.eustache.pos_system.Entities.Product;
 import com.eustache.pos_system.Entities.Stock;
@@ -21,6 +22,9 @@ public class ProductMapper {
 
     private final CategoryRepository categoryRepository;
     private final SupplierRepository supplierRepository;
+    private final StockMapper stockMapper;
+    private final SupplierMapper supplierMapper;
+    private final CategoryMapper categoryMapper;
 
 
     /**
@@ -83,17 +87,18 @@ public class ProductMapper {
      * Converts Product entity to ProductResponseDto
      */
     public ProductResponseDto toResponseFromProduct(Product product) {
-
-        CategorySummary category = new CategorySummary(
-                product.getCategory().getId(),
-                product.getCategory().getName()
-        );
-
-
-        SupplierSummary supplier = new SupplierSummary(
-                product.getSupplier().getId(),
-                product.getSupplier().getName()
-        );
+        /*
+         * Convert related entities to summaries
+         */
+        CategorySummary category = categoryMapper.toSummary(product.getCategory());
+        /*
+         * Convert related entities to summaries
+         */
+        SupplierSummary supplier = supplierMapper.toSummary(product.getSupplier());
+        /*
+         * Convert related entities to summaries
+         */
+        StockSummary stock = stockMapper.toSummary(product.getStock());
 
 
         return new ProductResponseDto(
@@ -103,7 +108,8 @@ public class ProductMapper {
                 product.getBarcode(),
                 product.getSellingPrice(),
                 category,
-                supplier
+                supplier,
+                stock
         );
     }
 

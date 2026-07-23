@@ -17,7 +17,7 @@ public class CustomerMapper {
 
     /**
      * Convert a CreateCustomerDto to a Customer entity
-     * @param customerDto
+     * @param customerDto CreateCustomerDto
      * @return Customer
      */
     public Customer toEntity(CreateCustomerDto customerDto){
@@ -46,7 +46,7 @@ public class CustomerMapper {
 
     /**
      * Convert a Customer entity to a CustomerResponseDto
-     * @param customer
+     * @param customer Customer entity
      * @return CustomerResponseDto
      */
     public CustomerResponseDto toResponseFromCustomer(Customer  customer) {

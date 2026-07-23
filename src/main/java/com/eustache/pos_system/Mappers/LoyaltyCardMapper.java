@@ -8,6 +8,11 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class LoyaltyCardMapper {
+    /**
+     * Converts a CreateLoyaltyCardDto to a LoyaltyCard entity.
+     * @param loyaltyCardDto CreateLoyaltyCardDto
+     * @return LoyaltyCard
+     */
     public LoyaltyCard toEntity(CreateLoyaltyCardDto loyaltyCardDto){
         LoyaltyCard loyaltyCard = new LoyaltyCard();
         loyaltyCard.setCardNumber(loyaltyCardDto.cardNumber());
@@ -16,6 +21,11 @@ public class LoyaltyCardMapper {
         return loyaltyCard;
     }
 
+    /**
+     * Converts a LoyaltyCard entity to a LoyaltyResponseCardDto.
+     * @param loyaltyCard LoyaltyCard entity
+     * @return LoyaltyResponseCardDto
+     */
     public LoyaltyResponseCardDto toResponseFromLoyaltyCard(LoyaltyCard loyaltyCard){
         return new LoyaltyResponseCardDto(
           loyaltyCard.getCardNumber(),

@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 public class UserMapper {
     /**
      * Converts a CreateUserDto to a User entity.
-     * @param createUserDto
+     * @param createUserDto CreateUserDto
      * @return User
      */
     public User toEntity(CreateUserDto createUserDto){
@@ -27,7 +27,7 @@ public class UserMapper {
 
     /**
      * Converts a User entity to a UserResponseDto.
-     * @param user
+     * @param user User entity
      * @return UserResponseDto
      */
     public UserResponseDto toResponseFromUser(User user){

@@ -1,6 +1,7 @@
 package com.eustache.pos_system.Mappers;
 
 import com.eustache.pos_system.DTO.Stock.Response.StockResponseDto;
+import com.eustache.pos_system.DTO.Stock.Response.StockSummary;
 import com.eustache.pos_system.Entities.Product;
 import com.eustache.pos_system.Entities.Stock;
 import org.springframework.stereotype.Component;
@@ -25,6 +26,19 @@ public class StockMapper {
                 stock.getUpdatedAt(),
                 product.getId(),
                 productName
+        );
+    }
+
+    /**
+     * Converts a Stock entity to a StockSummary.
+     * @param stock the Stock entity to convert
+     * @return a StockSummary containing the converted data
+     */
+    public StockSummary toSummary(Stock stock){
+        return new StockSummary(
+                stock.getQuantity(),
+                stock.getMinQuantity(),
+                stock.getLastUpdated()
         );
     }
 }

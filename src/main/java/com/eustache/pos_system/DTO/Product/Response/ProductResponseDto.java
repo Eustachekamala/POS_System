@@ -1,6 +1,7 @@
 package com.eustache.pos_system.DTO.Product.Response;
 
 import com.eustache.pos_system.DTO.Category.Response.CategorySummary;
+import com.eustache.pos_system.DTO.Stock.Response.StockSummary;
 import com.eustache.pos_system.DTO.Supplier.Response.SupplierSummary;
 
 import java.io.Serializable;
@@ -15,5 +16,6 @@ public record ProductResponseDto(
         String barcode,
         Double sellingPrice,
         CategorySummary category,
-        SupplierSummary supplier) implements Serializable {
+        SupplierSummary supplier,
+        StockSummary stock) implements Serializable {
 }
