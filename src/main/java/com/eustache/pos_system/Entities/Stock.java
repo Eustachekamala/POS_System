@@ -23,9 +23,9 @@ public class Stock {
     private double quantity;
 
     /**
-     * Many stocks can belong to one product
+     * One stock belongs to one product
      */
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "product_id", referencedColumnName = "id" , foreignKey = @ForeignKey(
             name = "fk_stock_product"
     ))

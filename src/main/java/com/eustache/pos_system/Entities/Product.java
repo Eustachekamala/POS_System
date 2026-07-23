@@ -73,4 +73,10 @@ public class Product {
             name = "fk_product_supplier"
     ))
     private Supplier supplier;
+
+    /**
+     * One product has one stock
+     */
+    @OneToOne(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Stock stock;
 }
