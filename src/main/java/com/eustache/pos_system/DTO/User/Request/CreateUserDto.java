@@ -12,8 +12,6 @@ import java.io.Serializable;
  * DTO for {@link com.eustache.pos_system.Entities.User}
  */
 public record CreateUserDto(
-        @NotBlank(message = "Password is required")
-        String password,
         @NotBlank(message = "First name is required")
         String firstName,
         @NotBlank(message = "Last name is required")
@@ -21,6 +19,8 @@ public record CreateUserDto(
         @NotBlank(message = "Email is required")
         @Email(message = "Invalid email format")
         String email,
+        @NotBlank(message = "Password is required")
+        String password,
         @NotBlank(message = "Phone is required")
         @Pattern(
                 regexp = "^\\+?[1-9]\\d{7,14}$",

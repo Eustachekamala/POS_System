@@ -8,6 +8,7 @@ import java.io.Serializable;
  * DTO for {@link com.eustache.pos_system.Entities.User}
  */
 public record UserResponseDto(
+        Long id,
         String username,
         String firstName,
         String lastName,

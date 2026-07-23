@@ -10,13 +10,14 @@ import java.util.List;
 
 @Component
 public interface UserServices {
-    String createUser(CreateUserDto createUserDto);
-    String updateUser(Long id, UpdateUserDto updateUserDto);
-    String deleteUser(Long id);
+    UserResponseDto createCashier(CreateUserDto request);
+    UserResponseDto createManager(CreateUserDto request);
+    UserResponseDto createAdmin(CreateUserDto request);
+    UserResponseDto updateUser(Long id, UpdateUserDto updateUserDto);
+    void deleteUser(Long id);
     List<UserResponseDto> getAllUsers();
     UserResponseDto getUserById(Long id);
     UserResponseDto getUserByEmail(String email);
     UserResponseDto getUserByUsername(String username);
     List<UserResponseDto> getUsersByRole(RoleEnum role);
-    List<UserResponseDto> searchUsers(String name);
 }

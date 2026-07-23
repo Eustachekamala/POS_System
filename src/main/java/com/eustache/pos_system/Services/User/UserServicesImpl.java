@@ -21,14 +21,28 @@ public class UserServicesImpl implements UserServices {
     private final UserMapper userMapper;
 
     @Override
-    public String createUser(CreateUserDto createUserDto) {
-        User user = userMapper.toEntity(createUserDto);
-        userRepository.save(user);
-        return "User created successfully";
+    public UserResponseDto createCashier(CreateUserDto request) {
+        User cashier = userMapper.toEntity(request);
+        userRepository.save(cashier);
+        return userMapper.toResponseFromUser(cashier);
     }
 
     @Override
-    public String updateUser(Long id, UpdateUserDto updateUserDto) {
+    public UserResponseDto createManager(CreateUserDto request) {
+        User manager = userMapper.toEntity(request);
+        userRepository.save(manager);
+        return userMapper.toResponseFromUser(manager);
+    }
+
+    @Override
+    public UserResponseDto createAdmin(CreateUserDto request) {
+        User admin = userMapper.toEntity(request);
+        userRepository.save(admin);
+        return userMapper.toResponseFromUser(admin);
+    }
+
+    @Override
+    public UserResponseDto updateUser(Long id, UpdateUserDto updateUserDto) {
         User user = userRepository.findById(id).orElseThrow(
                 () -> new BusinessException("User not found")
         );
@@ -44,16 +58,15 @@ public class UserServicesImpl implements UserServices {
         Optional.ofNullable(updateUserDto.address()).ifPresent(user::setAddress);
         Optional.ofNullable(updateUserDto.role()).ifPresent(user::setRole);
         userRepository.save(user);
-        return "User updated successfully";
+        return userMapper.toResponseFromUser(user);
     }
 
     @Override
-    public String deleteUser(Long id) {
+    public void deleteUser(Long id) {
         User user = userRepository.findById(id).orElseThrow(
                 () -> new BusinessException("User not found")
         );
         userRepository.delete(user);
-        return "User deleted successfully";
     }
 
     @Override
@@ -90,17 +103,6 @@ public class UserServicesImpl implements UserServices {
     @Override
     public List<UserResponseDto> getUsersByRole(RoleEnum role) {
         return userRepository.findByRole(role).stream()
-                .map(userMapper::toResponseFromUser)
-                .toList();
-    }
-
-    @Override
-    public List<UserResponseDto> searchUsers(String name) {
-        return userRepository.findAll().stream()
-                .filter(user ->
-                        user.getFirstName().toLowerCase().contains(name.toLowerCase())
-                                || user.getLastName().toLowerCase().contains(name.toLowerCase())
-                )
                 .map(userMapper::toResponseFromUser)
                 .toList();
     }

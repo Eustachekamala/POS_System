@@ -32,6 +32,7 @@ public class UserMapper {
      */
     public UserResponseDto toResponseFromUser(User user){
         return new UserResponseDto(
+                user.getId(),
                 user.getUsername(),
                 user.getFirstName(),
                 user.getLastName(),
