@@ -20,11 +20,22 @@ public class SaleItem {
     /**
      * Many sale items can belong to one sale
      */
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "sale_id", referencedColumnName = "id", foreignKey = @ForeignKey(
             name = "fk_sale_item_sale"
     ))
     private Sale sale;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(
+            name = "product_id",
+            nullable = false,
+            foreignKey = @ForeignKey(
+                    name = "fk_sale_item_product"
+            )
+    )
+    private Product product;
+
     @Column(
             nullable = false
     )
@@ -32,6 +43,10 @@ public class SaleItem {
     @Column(
             nullable = false
     )
+    /*
+     * Product price at the moment of sale
+     */
     private double unitPrice;
-    private double totalAmount;
+
+    private double subtotal;
 }

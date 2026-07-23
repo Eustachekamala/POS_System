@@ -46,6 +46,9 @@ public class ProductMapper {
         product.setExpiryDate(createProductDto.expiryDate());
 
 
+        /*
+         * Set Category
+         */
         product.setCategory(
                 categoryRepository.findById(createProductDto.categoryId())
                         .orElseThrow(
@@ -53,7 +56,9 @@ public class ProductMapper {
                         )
         );
 
-
+        /*
+         * Set Supplier
+         */
         product.setSupplier(
                 supplierRepository.findById(createProductDto.supplierId())
                         .orElseThrow(

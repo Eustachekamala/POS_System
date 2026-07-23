@@ -64,8 +64,8 @@ public class User {
     private RoleEnum role;
 
     /**
-     * One user can have many sales
+     * One cashier has many sales
      */
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "cashier", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Sale> sales;
 }

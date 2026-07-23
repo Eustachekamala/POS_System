@@ -9,6 +9,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -21,15 +23,26 @@ public class Sale {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @ManyToOne
+
+    /**
+     * Cashier who created the sale
+     */
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false, referencedColumnName = "id", foreignKey = @ForeignKey(
             name = "fk_sale_user"
     ))
-    private User user;
+    private User cashier;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "customer_id", referencedColumnName = "id", foreignKey = @ForeignKey(
+            name = "fk_sale_customer"
+    ))
+    private Customer customer;
+
     @Column(
             nullable = false
     )
-    private LocalDate saleDate;
+    private LocalDateTime saleDate;
     @Column(
             nullable = false
     )
@@ -53,14 +66,8 @@ public class Sale {
     private StatusPayment status;
 
     @OneToMany(mappedBy = "sale", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<SaleItem> saleItems;
+    private List<SaleItem> saleItems = new ArrayList<>();
 
     @OneToMany(mappedBy = "sale", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Payment> payments;
-
-    @ManyToOne
-    @JoinColumn(name = "customer_id", referencedColumnName = "id", foreignKey = @ForeignKey(
-            name = "fk_sale_customer"
-    ))
-    private Customer customer;
+    private List<Payment> payments = new ArrayList<>();
 }
