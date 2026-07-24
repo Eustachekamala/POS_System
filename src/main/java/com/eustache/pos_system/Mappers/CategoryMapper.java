@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
@@ -33,16 +34,18 @@ public class CategoryMapper {
      * @return CategoryResponseDto
      */
     public CategoryResponseDto toResponseFromCategory(Category category) {
-        List<ProductSummary> products =
-                category.getProducts()
-                        .stream()
-                        .map(product -> new ProductSummary(
-                                product.getId(),
-                                product.getName(),
-                                product.getBarcode(),
-                                product.getSellingPrice()
-                        ))
-                        .toList();
+
+        List<ProductSummary> products = Optional.ofNullable(category.getProducts())
+                .orElse(Collections.emptyList())
+                .stream()
+                .map(product -> new ProductSummary(
+                        product.getId(),
+                        product.getName(),
+                        product.getBarcode(),
+                        product.getSellingPrice()
+                ))
+                .toList();
+
         return new CategoryResponseDto(
                 category.getId(),
                 category.getName(),
