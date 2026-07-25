@@ -1,6 +1,7 @@
 package com.eustache.pos_system.Entities;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -10,6 +11,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -50,7 +52,8 @@ public class Customer {
      * One customer can have many sales
      */
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Sale> sales;
+    @JsonIgnore
+    private List<Sale> sales = new ArrayList<>();
 
     /**
      * One customer can have one loyalty card
@@ -60,13 +63,15 @@ public class Customer {
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
+    @JsonIgnore
     private LoyaltyCard loyaltyCard;
 
     /**
      * One customer can have many loyalty transactions
      */
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<LoyaltyTransaction> loyaltyTransactions;
+    @JsonIgnore
+    private List<LoyaltyTransaction> loyaltyTransactions = new ArrayList<>();
 
     @CreationTimestamp
     private LocalDateTime createdAt;

@@ -2,6 +2,7 @@ package com.eustache.pos_system.Entities;
 
 import com.eustache.pos_system.Helpers.PaymentMethod;
 import com.eustache.pos_system.Helpers.StatusPayment;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -31,12 +32,14 @@ public class Sale {
     @JoinColumn(name = "user_id", nullable = false, referencedColumnName = "id", foreignKey = @ForeignKey(
             name = "fk_sale_user"
     ))
+    @JsonIgnore
     private User cashier;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_id", referencedColumnName = "id", foreignKey = @ForeignKey(
             name = "fk_sale_customer"
     ))
+    @JsonIgnore
     private Customer customer;
 
     @Column(

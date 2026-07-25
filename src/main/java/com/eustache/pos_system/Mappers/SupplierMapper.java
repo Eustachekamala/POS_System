@@ -4,11 +4,14 @@ import com.eustache.pos_system.DTO.Product.Response.ProductResponseDto;
 import com.eustache.pos_system.DTO.Supplier.Request.CreateSupplierDto;
 import com.eustache.pos_system.DTO.Supplier.Response.SupplierResponseDto;
 import com.eustache.pos_system.DTO.Supplier.Response.SupplierSummary;
+import com.eustache.pos_system.Entities.Product;
 import com.eustache.pos_system.Entities.Supplier;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public class SupplierMapper {
@@ -32,13 +35,14 @@ public class SupplierMapper {
      * @return SupplierResponseDto
      */
     public SupplierResponseDto toResponseFromSupplier(Supplier supplier){
+        List<Product> products = Optional.ofNullable(supplier.getProducts()).orElse(new ArrayList<>());
         return new SupplierResponseDto(
                 supplier.getId(),
                 supplier.getName(),
                 supplier.getAddress(),
                 supplier.getPhone(),
                 supplier.getEmail(),
-                supplier.getProducts().size()
+                products.size()
         );
     }
 

@@ -1,6 +1,7 @@
 package com.eustache.pos_system.Entities;
 
 import com.eustache.pos_system.Helpers.LoyaltyTransactionType;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -23,19 +24,21 @@ public class LoyaltyTransaction {
     /**
      * Many loyalty transactions can have one customer
      */
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_id", referencedColumnName = "id", foreignKey = @ForeignKey(
             name = "fk_loyalty_transaction_customer"
     ))
+    @JsonIgnore
     private Customer customer;
 
     /**
      * Many loyalty transactions can have one sale
      */
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "sale_id", referencedColumnName = "id", foreignKey = @ForeignKey(
             name = "fk_loyalty_transaction_sale"
     ))
+    @JsonIgnore
     private Sale sale;
 
     @Column(
