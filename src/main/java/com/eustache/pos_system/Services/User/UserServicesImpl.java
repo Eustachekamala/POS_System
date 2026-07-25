@@ -20,6 +20,11 @@ public class UserServicesImpl implements UserServices {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
 
+    /**
+     * Creates a new cashier.
+     * @param request CreateUserDto
+     * @return UserResponseDto
+     */
     @Override
     public UserResponseDto createCashier(CreateUserDto request) {
         User cashier = userMapper.toEntity(request);
@@ -27,6 +32,11 @@ public class UserServicesImpl implements UserServices {
         return userMapper.toResponseFromUser(cashier);
     }
 
+    /**
+     * Creates a new manager.
+     * @param request CreateUserDto
+     * @return UserResponseDto
+     */
     @Override
     public UserResponseDto createManager(CreateUserDto request) {
         User manager = userMapper.toEntity(request);
@@ -34,6 +44,11 @@ public class UserServicesImpl implements UserServices {
         return userMapper.toResponseFromUser(manager);
     }
 
+    /**
+     * Creates a new admin.
+     * @param request CreateUserDto
+     * @return UserResponseDto
+     */
     @Override
     public UserResponseDto createAdmin(CreateUserDto request) {
         User admin = userMapper.toEntity(request);
@@ -41,6 +56,12 @@ public class UserServicesImpl implements UserServices {
         return userMapper.toResponseFromUser(admin);
     }
 
+    /**
+     * Updates an existing user.
+     * @param id Long
+     * @param updateUserDto UpdateUserDto
+     * @return UserResponseDto
+     */
     @Override
     public UserResponseDto updateUser(Long id, UpdateUserDto updateUserDto) {
         User user = userRepository.findById(id).orElseThrow(
@@ -61,6 +82,10 @@ public class UserServicesImpl implements UserServices {
         return userMapper.toResponseFromUser(user);
     }
 
+    /**
+     * Deletes an existing user.
+     * @param id Long
+     */
     @Override
     public void deleteUser(Long id) {
         User user = userRepository.findById(id).orElseThrow(
@@ -69,6 +94,10 @@ public class UserServicesImpl implements UserServices {
         userRepository.delete(user);
     }
 
+    /**
+     * Returns a list of all users.
+     * @return List<UserResponseDto>
+     */
     @Override
     public List<UserResponseDto> getAllUsers() {
         return userRepository.findAll().stream()
@@ -76,6 +105,11 @@ public class UserServicesImpl implements UserServices {
                 .toList();
     }
 
+    /**
+     * Returns a user by id.
+     * @param id Long
+     * @return UserResponseDto
+     */
     @Override
     public UserResponseDto getUserById(Long id) {
         User user = userRepository.findById(id).orElseThrow(
@@ -84,14 +118,11 @@ public class UserServicesImpl implements UserServices {
         return userMapper.toResponseFromUser(user);
     }
 
-    @Override
-    public UserResponseDto getUserByEmail(String email) {
-        User user = userRepository.findByEmail(email).orElseThrow(
-                () -> new BusinessException("User not found")
-        );
-        return userMapper.toResponseFromUser(user);
-    }
-
+    /**
+     * Returns a user by username.
+     * @param username String
+     * @return UserResponseDto
+     */
     @Override
     public UserResponseDto getUserByUsername(String username) {
         User user = userRepository.findByUsername(username).orElseThrow(
@@ -100,6 +131,11 @@ public class UserServicesImpl implements UserServices {
         return userMapper.toResponseFromUser(user);
     }
 
+    /**
+     * Returns a list of users by role.
+     * @param role RoleEnum
+     * @return List<UserResponseDto>
+     */
     @Override
     public List<UserResponseDto> getUsersByRole(RoleEnum role) {
         return userRepository.findByRole(role).stream()

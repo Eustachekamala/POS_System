@@ -24,6 +24,11 @@ public class CustomerServicesImpl implements CustomerServices {
     private final LoyaltyCardRepository loyaltyCardRepository;
     private final CustomerMapper customerMapper;
 
+    /**
+     * Creates a new customer.
+     * @param customerDto CreateCustomerDto
+     * @return CustomerResponseDto
+     */
     @Override
     public CustomerResponseDto createCustomer(CreateCustomerDto customerDto) {
         Customer customer = customerMapper.toEntity(customerDto);
@@ -31,6 +36,12 @@ public class CustomerServicesImpl implements CustomerServices {
         return customerMapper.toResponseFromCustomer(customer);
     }
 
+    /**
+     * Updates an existing customer.
+     * @param id Long
+     * @param customerDto UpdateCustomerDto
+     * @return CustomerResponseDto
+     */
     @Override
     public CustomerResponseDto updateCustomer(Long id, UpdateCustomerDto customerDto) {
         Customer customer = customerRepository.findById(id)
@@ -51,15 +62,24 @@ public class CustomerServicesImpl implements CustomerServices {
         return customerMapper.toResponseFromCustomer(updatedCustomer);
     }
 
+    /**
+     * Deletes an existing customer.
+     * @param id Long
+     */
     @Override
     public void deleteCustomer(Long id) {
         Customer customer = customerRepository.findById(id)
                 .orElseThrow(() -> new BusinessException("Customer not found with id: " + id));
-        
+
         CustomerResponseDto responseDto = customerMapper.toResponseFromCustomer(customer);
         customerRepository.delete(customer);
     }
 
+    /**
+     * Gets a customer by id.
+     * @param id Long
+     * @return CustomerResponseDto
+     */
     @Override
     public CustomerResponseDto getCustomerById(Long id) {
         Customer customer = customerRepository.findById(id)
@@ -67,6 +87,10 @@ public class CustomerServicesImpl implements CustomerServices {
         return customerMapper.toResponseFromCustomer(customer);
     }
 
+    /**
+     * Gets all customers.
+     * @return List<CustomerResponseDto>
+     */
     @Override
     public List<CustomerResponseDto> getAllCustomers() {
         return customerRepository.findAll().stream()
@@ -74,6 +98,11 @@ public class CustomerServicesImpl implements CustomerServices {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Gets a customer by loyalty card.
+     * @param loyaltyCard LoyaltyCard
+     * @return CustomerResponseDto
+     */
     @Override
     public CustomerResponseDto getCustomersByLoyaltyCard(LoyaltyCard loyaltyCard) {
         Customer customer = customerRepository.findByLoyaltyCard(loyaltyCard)

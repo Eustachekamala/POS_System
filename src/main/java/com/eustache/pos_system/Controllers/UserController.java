@@ -134,18 +134,6 @@ public class UserController {
         return ResponseEntity.ok(userServices.getUserById(id));
     }
 
-    @GetMapping("/email/{email}")
-    @Operation(summary = "Get a user by email", description = "Get a user by providing user email")
-    @ApiResponses(
-            value = {
-                    @ApiResponse(responseCode = "200", description = "User retrieved successfully"),
-                    @ApiResponse(responseCode = "404", description = "User not found")
-            }
-    )
-    public ResponseEntity<UserResponseDto> getUserByEmail(@PathVariable String email) {
-        return ResponseEntity.ok(userServices.getUserByEmail(email));
-    }
-
     @GetMapping("/username/{username}")
     @Operation(summary = "Get a user by username", description = "Get a user by providing username")
     @ApiResponses(

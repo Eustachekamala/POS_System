@@ -28,6 +28,10 @@ public class ProductServicesImpl implements ProductServices {
     private final SupplierRepository supplierRepository;
     private final StockRepository stockRepository;
 
+    /**
+     * Returns a list of all products.
+     * @return List of ProductResponseDto
+     */
     @Override
     public List<ProductResponseDto> getAll() {
         return productRepository.findAll().stream().map(productMapper::toResponseFromProduct).toList();
@@ -41,6 +45,13 @@ public class ProductServicesImpl implements ProductServices {
         return productMapper.toResponseFromProduct(product);
     }
 
+    /**
+     * Creates a new product.
+     * @param createProductDto CreateProductDto
+     * @return ProductResponseDto
+     * @throws BusinessException if product already exists
+     * Used Transactional to ensure data consistency
+     */
     @Transactional
     @Override
     public ProductResponseDto create(CreateProductDto createProductDto) {
@@ -49,6 +60,14 @@ public class ProductServicesImpl implements ProductServices {
         return productMapper.toResponseFromProduct(productCreated);
     }
 
+    /**
+     * Updates an existing product.
+     * @param id Long
+     * @param updateProductDto UpdateProductDto
+     * @return ProductResponseDto
+     * @throws BusinessException if product not found
+     * Used Transactional to ensure data consistency
+     */
     @Override
     @Transactional
     public ProductResponseDto update(Long id, UpdateProductDto updateProductDto) {
@@ -128,6 +147,12 @@ public class ProductServicesImpl implements ProductServices {
         return productMapper.toResponseFromProduct(product);
     }
 
+    /**
+     * Deletes an existing product.
+     * @param id Long
+     * @return String
+     * @throws BusinessException if product not found
+     */
     @Override
     public String delete(Long id) {
         Product product = productRepository.findById(id).orElseThrow(
@@ -137,6 +162,12 @@ public class ProductServicesImpl implements ProductServices {
         return "Product deleted successfully";
     }
 
+    /**
+     * Searches for a product by name.
+     * @param name String
+     * @return ProductResponseDto
+     * @throws BusinessException if product not found
+     */
     @Override
     public ProductResponseDto searchByName(String name) {
         Product product = productRepository.findByName(name);
@@ -146,6 +177,12 @@ public class ProductServicesImpl implements ProductServices {
         return productMapper.toResponseFromProduct(product);
     }
 
+    /**
+     * Searches for a product by barcode.
+     * @param barcode String
+     * @return ProductResponseDto
+     * @throws BusinessException if product not found
+     */
     @Override
     public ProductResponseDto searchByBarcode(String barcode) {
         Product product = productRepository.findByBarcode(barcode);
@@ -155,6 +192,11 @@ public class ProductServicesImpl implements ProductServices {
         return productMapper.toResponseFromProduct(product);
     }
 
+    /**
+     * Searches for products by category name.
+     * @param categoryName String
+     * @return List of ProductResponseDto
+     */
     @Override
     public List<ProductResponseDto> searchByCategory(String categoryName) {
         return productRepository.findByCategoryName(categoryName)

@@ -27,7 +27,6 @@ public class LoyaltyServicesImpl implements LoyaltyServices{
 
     /**
      * Adds points to a customer's loyalty card.
-     *
      * @param customer  Customer Entity
      * @param savedSale Sale Entity
      * @param amount    Double
@@ -90,6 +89,12 @@ public class LoyaltyServicesImpl implements LoyaltyServices{
         loyaltyTransactionRepository.save(transaction);
     }
 
+    /**
+     * Spends points from a customer's loyalty card.
+     * @param customerId Long
+     * @param request LoyaltyTransactionRequest
+     * @return List of LoyaltyTransactionResponseDto
+     */
     @Override
     @Transactional
     public List<LoyaltyTransactionResponseDto> spendPoints(Long customerId, LoyaltyTransactionRequest request) {

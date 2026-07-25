@@ -17,7 +17,6 @@ public interface UserServices {
     void deleteUser(Long id);
     List<UserResponseDto> getAllUsers();
     UserResponseDto getUserById(Long id);
-    UserResponseDto getUserByEmail(String email);
     UserResponseDto getUserByUsername(String username);
     List<UserResponseDto> getUsersByRole(RoleEnum role);
 }
