@@ -99,7 +99,7 @@ public class CustomerController {
         return ResponseEntity.ok(customerServices.getCustomerById(id));
     }
 
-    @GetMapping("/loyalty-card")
+    @GetMapping("/{loyaltyCardNumber}")
     @Operation(summary = "Get a customer by loyalty card", description = "Get a customer by providing loyalty card details")
     @ApiResponses(
             value = {
@@ -107,7 +107,7 @@ public class CustomerController {
                     @ApiResponse(responseCode = "404", description = "Customer not found")
             }
     )
-    public ResponseEntity<CustomerResponseDto> getCustomerByLoyaltyCard(@RequestBody LoyaltyCard loyaltyCard) {
-        return ResponseEntity.ok(customerServices.getCustomersByLoyaltyCard(loyaltyCard));
+    public ResponseEntity<CustomerResponseDto> getCustomerByLoyaltyCard(@PathVariable String loyaltyCardNumber) {
+        return ResponseEntity.ok(customerServices.getCustomersByLoyaltyCard(loyaltyCardNumber));
     }
 }

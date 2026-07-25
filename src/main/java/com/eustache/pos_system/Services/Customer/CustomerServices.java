@@ -17,5 +17,5 @@ public interface CustomerServices {
     void deleteCustomer(Long id);
     CustomerResponseDto getCustomerById(Long id);
     List<CustomerResponseDto> getAllCustomers();
-    CustomerResponseDto getCustomersByLoyaltyCard(LoyaltyCard loyaltyCard);
+    CustomerResponseDto getCustomersByLoyaltyCard(String loyaltyCardNumber);
 }

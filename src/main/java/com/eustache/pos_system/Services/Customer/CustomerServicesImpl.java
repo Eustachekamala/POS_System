@@ -99,14 +99,16 @@ public class CustomerServicesImpl implements CustomerServices {
     }
 
     /**
-     * Gets a customer by loyalty card.
-     * @param loyaltyCard LoyaltyCard
+     * Gets a customer by loyalty card number.
+     * @param loyaltyCardNumber LoyaltyCard
      * @return CustomerResponseDto
      */
     @Override
-    public CustomerResponseDto getCustomersByLoyaltyCard(LoyaltyCard loyaltyCard) {
-        Customer customer = customerRepository.findByLoyaltyCard(loyaltyCard)
-                .orElseThrow(() -> new BusinessException("Customer not found with loyalty card: " + loyaltyCard.getCardNumber()));
+    public CustomerResponseDto getCustomersByLoyaltyCard(String loyaltyCardNumber) {
+        Customer customer = customerRepository.findByLoyaltyCard(loyaltyCardNumber);
+        if (customer == null) {
+            throw new BusinessException("Customer not found with loyalty card: " + loyaltyCardNumber);
+        }
         return customerMapper.toResponseFromCustomer(customer);
     }
 }
