@@ -260,30 +260,19 @@ public class SaleServicesImpl implements SaleServices{
     }
 
     /**
-     * Gets sales by date
-     * @param date Date
-     * @return List of sales
-     */
-    @Override
-    public List<SaleResponseDto> getSalesByDate(LocalDateTime date) {
-        LocalDateTime startDate = date.toLocalDate().atStartOfDay();
-        LocalDateTime endDate = date.toLocalDate().plusDays(1).atStartOfDay();
-        return saleRepository.findBySaleDateBetween(startDate, endDate).stream()
-                .map(saleMapper::toSaleResponseFromSale)
-                .collect(Collectors.toList());
-    }
-
-    /**
      * Gets sales between dates
      * @param startDate Start date
      * @param endDate End date
      * @return List of sales
      */
     @Override
-    public List<SaleResponseDto> getSalesBetweenDates(LocalDateTime startDate, LocalDateTime endDate) {
-        return saleRepository.findBySaleDateBetween(startDate, endDate).stream()
+    public List<SaleResponseDto> getSalesBetweenDates(LocalDate startDate, LocalDate endDate) {
+        return saleRepository.findBySaleDateBetween(
+                        startDate.atStartOfDay(),
+                        endDate.plusDays(1).atStartOfDay().minusNanos(1))
+                .stream()
                 .map(saleMapper::toSaleResponseFromSale)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     /**

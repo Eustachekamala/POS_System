@@ -38,7 +38,7 @@ public class SaleReportController {
         return ResponseEntity.ok(salesReportService.getTodayRevenue());
     }
 
-    @GetMapping("/revenue-between-dates/{startDate}/{endDate}")
+    @GetMapping("/{startDate}/{endDate}")
     @Operation(
             summary = "Get revenue between dates",
             description = "Get revenue between dates"
@@ -76,7 +76,7 @@ public class SaleReportController {
         return ResponseEntity.ok(salesReportService.getTodaySalesCount());
     }
 
-    @GetMapping("/sales-count-between-dates/{startDate}/{endDate}")
+    @GetMapping("/sales-count/{startDate}/{endDate}")
     @Operation(
             summary = "Get Count of Sales Between Dates",
             description = "Get Count of Sales Between Dates"

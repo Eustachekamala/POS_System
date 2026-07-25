@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -77,7 +78,7 @@ public class SaleController {
         return ResponseEntity.ok(saleServices.getAllSales());
     }
 
-    @PostMapping("/{id}")
+    @PostMapping("/cancel/{id}")
     @Operation(
             summary = "Cancel a sale",
             description = "Cancel a sale by ID"
@@ -94,7 +95,7 @@ public class SaleController {
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/{id}/refund")
+    @PostMapping("/refund/{id}")
     @Operation(
             summary = "Refound a sale",
             description = "Refound a sale by ID"
@@ -111,7 +112,7 @@ public class SaleController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/{id}/receipt")
+    @GetMapping("/receipt/{id}")
     @Operation(
             summary = "Get a receipt by sale ID",
             description = "Get a receipt by sale ID"
@@ -127,23 +128,8 @@ public class SaleController {
         return ResponseEntity.ok(saleServices.getReceipt(id));
     }
 
-    @GetMapping("/date/{date}")
-    @Operation(
-            summary = "Get sales by date",
-            description = "Get sales by date"
-    )
-    @ApiResponses(
-            value = {
-                    @ApiResponse(responseCode = "200", description = "Sales found successfully"),
-                    @ApiResponse(responseCode = "404", description = "Sales not found"),
-                    @ApiResponse(responseCode = "500", description = "Internal server error")
-            }
-    )
-    public ResponseEntity<List<SaleResponseDto>> getSalesByDate(@PathVariable LocalDateTime date) {
-        return ResponseEntity.ok(saleServices.getSalesByDate(date));
-    }
 
-    @GetMapping("/date-between/{startDate}/{endDate}")
+    @GetMapping("{startDate}/{endDate}")
     @Operation(
             summary = "Get sales between dates",
             description = "Get sales between dates"
@@ -155,7 +141,7 @@ public class SaleController {
                     @ApiResponse(responseCode = "500", description = "Internal server error")
             }
     )
-    public ResponseEntity<List<SaleResponseDto>> getSalesBetweenDates(@PathVariable LocalDateTime startDate, @PathVariable LocalDateTime endDate) {
+    public ResponseEntity<List<SaleResponseDto>> getSalesBetweenDates(@PathVariable LocalDate startDate, @PathVariable LocalDate endDate) {
         return ResponseEntity.ok(saleServices.getSalesBetweenDates(startDate, endDate));
     }
 
@@ -191,7 +177,7 @@ public class SaleController {
         return ResponseEntity.ok(saleServices.getSalesByCustomer(customerId));
     }
 
-    @GetMapping("/customer-name/{customerName}")
+    @GetMapping("/{customerName}")
     @Operation(
             summary = "Get all the sales for a Customer By its Name",
             description = "Get all the sales for a Customer By its Name"
@@ -207,7 +193,7 @@ public class SaleController {
         return ResponseEntity.ok(saleServices.searchSalesByCustomerName(customerName));
     }
 
-    @GetMapping("/payment-method/{paymentMethod}")
+    @GetMapping("/{paymentMethod}")
     @Operation(
             summary = "Get all the sales by Payment Method",
             description = "Get all the sales by Payment Method"
@@ -223,7 +209,7 @@ public class SaleController {
         return ResponseEntity.ok(saleServices.getSalesByPaymentMethod(paymentMethod));
     }
 
-    @GetMapping("/status/{status}")
+    @GetMapping("/{status}")
     @Operation(
             summary = "Get all the sales by Status Payment",
             description = "Get all the sales by Status Payment"

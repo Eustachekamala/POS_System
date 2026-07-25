@@ -7,7 +7,6 @@ import com.eustache.pos_system.Helpers.PaymentMethod;
 import com.eustache.pos_system.Helpers.StatusPayment;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 public interface SaleServices {
@@ -23,11 +22,9 @@ public interface SaleServices {
     ReceiptResponseDto getReceipt(Long saleId);
     List<ReceiptResponseDto> getReceipts();
 
-    // SEARCH & FILTERS
-    List<SaleResponseDto> getSalesByDate(LocalDateTime date);
     List<SaleResponseDto> getSalesBetweenDates(
-            LocalDateTime startDate,
-            LocalDateTime endDate
+            LocalDate startDate,
+            LocalDate endDate
     );
     List<SaleResponseDto> getSalesByCashier(Long cashierId);
     List<SaleResponseDto> getSalesByCustomer(Long customerId);
