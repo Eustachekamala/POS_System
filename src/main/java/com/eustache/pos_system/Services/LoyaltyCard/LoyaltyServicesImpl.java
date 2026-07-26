@@ -3,12 +3,14 @@ package com.eustache.pos_system.Services.LoyaltyCard;
 import com.eustache.pos_system.DTO.LoyaltyTransactions.Request.LoyaltyTransactionRequest;
 import com.eustache.pos_system.DTO.LoyaltyTransactions.Response.LoyaltyTransactionResponseDto;
 import com.eustache.pos_system.Entities.Customer;
+import com.eustache.pos_system.Entities.LoyaltyCard;
 import com.eustache.pos_system.Entities.LoyaltyTransaction;
 import com.eustache.pos_system.Entities.Sale;
 import com.eustache.pos_system.Exceptions.BusinessException;
 import com.eustache.pos_system.Helpers.LoyaltyTransactionType;
 import com.eustache.pos_system.Mappers.LoyaltyTransactionMapper;
 import com.eustache.pos_system.Repositories.CustomerRepository;
+import com.eustache.pos_system.Repositories.LoyaltyCardRepository;
 import com.eustache.pos_system.Repositories.LoyaltyTransactionRepository;
 import com.eustache.pos_system.Repositories.SaleRepository;
 import jakarta.transaction.Transactional;
@@ -24,6 +26,7 @@ public class LoyaltyServicesImpl implements LoyaltyServices{
     private final LoyaltyTransactionRepository loyaltyTransactionRepository;
     private final SaleRepository saleRepository;
     private final LoyaltyTransactionMapper loyaltyTransactionMapper;
+    private final LoyaltyCardRepository loyaltyCardRepository;
 
     /**
      * Adds points to a customer's loyalty card.
@@ -34,9 +37,19 @@ public class LoyaltyServicesImpl implements LoyaltyServices{
     @Override
     @Transactional
     public void addPoints(Customer customer, Sale savedSale, double amount) {
+        LoyaltyCard loyaltyCard = customer.getLoyaltyCard();
+
+        if (loyaltyCard == null) {
+            throw new BusinessException("Customer does not have a loyalty card.");
+        }
 
         int pointsEarned = (int) amount;
         int newBalance = customer.getLoyaltyPoints() + pointsEarned;
+        /*
+         * Update loyalty card balance
+         */
+        loyaltyCard.setPoints(newBalance);
+        loyaltyCardRepository.save(loyaltyCard);
 
         customer.setLoyaltyPoints(newBalance);
         customerRepository.save(customer);
@@ -50,7 +63,7 @@ public class LoyaltyServicesImpl implements LoyaltyServices{
                         pointsEarned,
                         0,
                         newBalance,
-                        LoyaltyTransactionType.EARN
+                        LoyaltyTransactionType.EARNED
                 );
         loyaltyTransactionRepository.save(transaction);
     }
@@ -83,9 +96,62 @@ public class LoyaltyServicesImpl implements LoyaltyServices{
                         0,
                         pointsSpent,
                         newBalance,
-                        LoyaltyTransactionType.REDEEM
+                        LoyaltyTransactionType.REDEEMED
                 );
 
+        loyaltyTransactionRepository.save(transaction);
+    }
+
+    /**
+     * Removes loyalty points earned from a sale.
+     *
+     * @param customer Customer whose points will be removed
+     * @param sale Sale being canceled or refunded
+     */
+    @Override
+    @Transactional
+    public void removePoints(Customer customer, Sale sale) {
+        if (customer == null || sale == null) {
+            return;
+        }
+
+        LoyaltyCard loyaltyCard = customer.getLoyaltyCard();
+
+        if (loyaltyCard == null) {
+            return;
+        }
+
+        /*
+         * Find the loyalty transaction for the sale
+         */
+        LoyaltyTransaction transaction = loyaltyTransactionRepository
+                .findBySaleAndType(sale, LoyaltyTransactionType.EARNED);
+        if (transaction == null){
+            throw new BusinessException("No loyalty transaction found for this sale.");
+        }
+
+        /*
+         * Get the points earned from the transaction
+         */
+        int pointsToRemove = transaction.getPointsEarned();
+
+        /*
+         * Update the loyalty card balance
+         */
+        loyaltyCard.setPoints(
+                Math.max(0, loyaltyCard.getPoints() - pointsToRemove)
+        );
+
+        /*
+         * Update the loyalty transaction
+         */
+        transaction.setPointsBalance(loyaltyCard.getPoints());
+        transaction.setType(LoyaltyTransactionType.REFUNDED);
+
+        /*
+         * Save the loyalty card and transaction
+         */
+        loyaltyCardRepository.save(loyaltyCard);
         loyaltyTransactionRepository.save(transaction);
     }
 

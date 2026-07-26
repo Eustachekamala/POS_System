@@ -1,6 +1,7 @@
 package com.eustache.pos_system.DTO.Payment.Request;
 
 import com.eustache.pos_system.Helpers.PaymentMethod;
+import com.eustache.pos_system.Helpers.PaymentProvider;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -11,6 +12,7 @@ import java.time.LocalDate;
  */
 public record CreatePaymentDto(
         PaymentMethod paymentMethod,
+        PaymentProvider provider,
         BigDecimal amount,
         LocalDate paymentDate,
         String note,

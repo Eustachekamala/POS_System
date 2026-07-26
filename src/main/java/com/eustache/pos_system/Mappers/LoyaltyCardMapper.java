@@ -17,6 +17,7 @@ public class LoyaltyCardMapper {
         LoyaltyCard loyaltyCard = new LoyaltyCard();
         loyaltyCard.setCardNumber(loyaltyCardDto.cardNumber());
         loyaltyCard.setQrCode(loyaltyCard.getQrCode());
+        loyaltyCard.setPoints(0);
         loyaltyCard.setStatus(LoyaltyCardStatus.ACTIVE);
         return loyaltyCard;
     }
@@ -29,6 +30,7 @@ public class LoyaltyCardMapper {
     public LoyaltyResponseCardDto toResponseFromLoyaltyCard(LoyaltyCard loyaltyCard){
         return new LoyaltyResponseCardDto(
           loyaltyCard.getCardNumber(),
+          loyaltyCard.getPoints(),
           loyaltyCard.getQrCode(),
           loyaltyCard.getStatus()
         );

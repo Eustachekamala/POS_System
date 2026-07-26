@@ -2,6 +2,7 @@ package com.eustache.pos_system.Repositories;
 
 import com.eustache.pos_system.DTO.LoyaltyTransactions.Response.LoyaltyTransactionResponseDto;
 import com.eustache.pos_system.Entities.LoyaltyTransaction;
+import com.eustache.pos_system.Entities.Sale;
 import com.eustache.pos_system.Helpers.LoyaltyTransactionType;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -14,4 +15,5 @@ public interface LoyaltyTransactionRepository extends JpaRepository<LoyaltyTrans
             Long customerId,
             LoyaltyTransactionType type
     );
+    LoyaltyTransaction findBySaleAndType(Sale sale, LoyaltyTransactionType type);
 }

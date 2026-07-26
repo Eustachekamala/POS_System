@@ -218,6 +218,22 @@ public class SaleServicesImpl implements SaleServices{
     public void cancelSale(Long saleId) {
         Sale sale = saleRepository.findById(saleId)
                 .orElseThrow(() -> new BusinessException("Sale not found"));
+        if (sale.getStatus() == StatusPayment.CANCELLED){
+            throw new BusinessException("Sale already cancelled");
+        }
+        if (sale.getStatus() == StatusPayment.REFUNDED){
+            throw new BusinessException("Sale already refunded");
+        }
+        /*
+         * Restores stock quantity
+         */
+        restoreStock(sale);
+
+        /*
+         * Remove loyalty points when sales is canceled or refunded
+         */
+        loyaltyServicesImpl.removePoints(sale.getCustomer(), sale);
+
         sale.setStatus(StatusPayment.CANCELLED);
         saleRepository.save(sale);
     }
@@ -231,6 +247,21 @@ public class SaleServicesImpl implements SaleServices{
     public void refundSale(Long saleId) {
         Sale sale = saleRepository.findById(saleId)
                 .orElseThrow(() -> new BusinessException("Sale not found"));
+        if (sale.getStatus() == StatusPayment.CANCELLED){
+            throw new BusinessException("Sale already cancelled");
+        }
+        if (sale.getStatus() == StatusPayment.REFUNDED){
+            throw new BusinessException("Sale already refunded");
+        }
+        /*
+         * Restores stock quantity
+         */
+        restoreStock(sale);
+
+        /*
+         * Remove loyalty points when sales is canceled or refunded
+         */
+        loyaltyServicesImpl.removePoints(sale.getCustomer(), sale);
         sale.setStatus(StatusPayment.REFUNDED);
         saleRepository.save(sale);
     }
@@ -335,5 +366,21 @@ public class SaleServicesImpl implements SaleServices{
         return saleRepository.findByStatus(paymentStatus).stream()
                 .map(saleMapper::toSaleResponseFromSale)
                 .collect(Collectors.toList());
+    }
+
+
+    /**
+     *  A helper method when It comes to cancel or refound a sales
+     * @param sale Sale to restore stock
+     */
+    private void restoreStock(Sale sale) {
+        for (SaleItem saleItem : sale.getSaleItems()) {
+            Product product = saleItem.getProduct();
+            Stock stock = product.getStock();
+
+            stock.setQuantity(stock.getQuantity() + saleItem.getQuantity());
+
+            productRepository.save(product);
+        }
     }
 }

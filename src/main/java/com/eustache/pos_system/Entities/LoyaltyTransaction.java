@@ -56,6 +56,11 @@ public class LoyaltyTransaction {
     )
     private int pointsBalance;
 
+    @Column(
+            columnDefinition = "TEXT"
+    )
+    private String description;
+
     @Enumerated(EnumType.STRING)
     @Column(
             nullable = false

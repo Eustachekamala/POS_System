@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
  */
 public record LoyaltyResponseCardDto(
         String cardNumber,
+        int points,
         String qrCode,
         LoyaltyCardStatus status) implements Serializable {
 }

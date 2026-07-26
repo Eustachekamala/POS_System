@@ -11,6 +11,7 @@ import java.util.List;
 public interface LoyaltyServices {
     void addPoints(Customer customer, Sale savedSale, double amount);
     void spendPoints(Customer customer, Sale savedSale, double amount);
+    void removePoints(Customer customer, Sale sale);
     List<LoyaltyTransactionResponseDto> spendPoints(Long customerId, LoyaltyTransactionRequest request);
     int getLoyaltyPoints(Long customerId);
     List<LoyaltyTransactionResponseDto> getLoyaltyTransactions(Long customerId);

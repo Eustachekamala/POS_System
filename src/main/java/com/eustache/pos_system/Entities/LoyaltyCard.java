@@ -33,6 +33,8 @@ public class LoyaltyCard {
             unique = true
     )
     private String qrCode;
+    @Column(nullable = false)
+    private int points = 0;
     @Enumerated(EnumType.STRING)
     @Column(
             nullable = false

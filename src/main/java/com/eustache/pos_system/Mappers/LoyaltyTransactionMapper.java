@@ -10,23 +10,6 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class LoyaltyTransactionMapper {
-//    /**
-//     * Converts a CreateLoyaltyTransactionDto to a LoyaltyTransaction entity.
-//     * @param dto CreateLoyaltyTransactionDto
-//     * @param customer Customer entity
-//     * @param sale Sale entity
-//     * @return LoyaltyTransaction
-//     */
-//    public LoyaltyTransaction toEntity(CreateLoyaltyTransactionDto dto, Customer customer, Sale sale) {
-//        LoyaltyTransaction transaction = new LoyaltyTransaction();
-//        transaction.setCustomer(customer);
-//        transaction.setSale(sale);
-//        transaction.setPointsEarned(dto.pointsEarned());
-//        transaction.setPointsSpent(dto.pointsSpent());
-//        transaction.setType(dto.type());
-//        return transaction;
-//    }
-
     /**
      * Converts a LoyaltyTransaction entity to a LoyaltyTransaction entity.
      * @param customer Customer Entity

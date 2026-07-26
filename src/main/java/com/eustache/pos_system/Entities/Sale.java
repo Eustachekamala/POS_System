@@ -1,6 +1,7 @@
 package com.eustache.pos_system.Entities;
 
 import com.eustache.pos_system.Helpers.PaymentMethod;
+import com.eustache.pos_system.Helpers.PaymentProvider;
 import com.eustache.pos_system.Helpers.StatusPayment;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
@@ -61,6 +62,9 @@ public class Sale {
             length = 100
     )
     private PaymentMethod paymentMethod;
+
+    @Enumerated(EnumType.STRING)
+    private PaymentProvider provider;
     @Enumerated(EnumType.STRING)
     @Column(
             nullable = false,
